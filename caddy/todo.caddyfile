@@ -1,0 +1,18 @@
+todo.local.netpirates.net {
+    tls /etc/caddy/tls/todo.local.netpirates.net.pem /etc/caddy/tls/todo.local.netpirates.net-key.pem
+
+    root * /var/www/app/public
+
+    @static file
+    handle @static {
+        file_server
+    }
+    
+    handle {
+#        php_fastcgi unix//var/run/php-fpm/www.sock {
+         php_fastcgi 127.0.0.1:9000 {
+#            env SCRIPT_FILENAME /var/www/app/public/index.php
+            env SCRIPT_FILENAME /app/public/index.php
+        }
+    }
+}  

@@ -1,0 +1,70 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-5.6.2
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    io.kubernetes.cri-o.SandboxID/caddy: 8c281e5b0ba34f8a955e9c8d49ee3e5efe842b1080ac1bdf989f064e8fa33207
+    io.kubernetes.cri-o.SandboxID/fpm: 8c281e5b0ba34f8a955e9c8d49ee3e5efe842b1080ac1bdf989f064e8fa33207
+    io.kubernetes.cri-o.SandboxID/mysql: 8c281e5b0ba34f8a955e9c8d49ee3e5efe842b1080ac1bdf989f064e8fa33207
+    io.kubernetes.cri-o.SandboxID/valkey: 8c281e5b0ba34f8a955e9c8d49ee3e5efe842b1080ac1bdf989f064e8fa33207
+    io.podman.annotations.volumes-from/caddy: fpm
+  creationTimestamp: "2025-10-27T02:30:35Z"
+  labels:
+    app: TodoAPP
+  name: TodoAPP
+spec:
+  containers:
+  - args:
+    - mysqld
+    env:
+    - name: MYSQL_ALLOW_EMPTY_PASSWORD
+      value: "1"
+    image: docker.io/library/mysql:8.4
+    name: mysql
+    ports:
+    - containerPort: 6379
+      hostIP: 127.0.0.1
+      hostPort: 6379
+    - containerPort: 80
+      hostIP: 127.0.0.1
+      hostPort: 8080
+    volumeMounts:
+    - mountPath: /var/lib/mysql
+      name: 82f89899e8e2cd33f7834ea5f55fcfcc98a948b7f924c42f9e5dc47ef399ff17-pvc
+  - args:
+    - valkey-server
+    image: docker.io/valkey/valkey:9-alpine
+    name: valkey
+    volumeMounts:
+    - mountPath: /data
+      name: d58875bca3ad58761396c9caa3c954e4fb226d31af4af254c49c35b0d3801e5b-pvc
+  - args:
+    - php-fpm
+    image: localhost/todo-pod-fpm:latest
+    name: fpm
+    volumeMounts:
+    - mountPath: /app/public
+      name: d66426b7403f25f5af942d62d354c484092c75a81f9a6eef12998a89606ff044-pvc
+  - env:
+    - name: TERM
+      value: xterm
+    image: localhost/todo-pod-caddy:latest
+    name: caddy
+    stdin: true
+    tty: true
+    volumeMounts:
+    - mountPath: /app/public
+      name: d66426b7403f25f5af942d62d354c484092c75a81f9a6eef12998a89606ff044-pvc
+  volumes:
+  - name: 82f89899e8e2cd33f7834ea5f55fcfcc98a948b7f924c42f9e5dc47ef399ff17-pvc
+    persistentVolumeClaim:
+      claimName: 82f89899e8e2cd33f7834ea5f55fcfcc98a948b7f924c42f9e5dc47ef399ff17
+  - name: d58875bca3ad58761396c9caa3c954e4fb226d31af4af254c49c35b0d3801e5b-pvc
+    persistentVolumeClaim:
+      claimName: d58875bca3ad58761396c9caa3c954e4fb226d31af4af254c49c35b0d3801e5b
+  - name: d66426b7403f25f5af942d62d354c484092c75a81f9a6eef12998a89606ff044-pvc
+    persistentVolumeClaim:
+      claimName: d66426b7403f25f5af942d62d354c484092c75a81f9a6eef12998a89606ff044

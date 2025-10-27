@@ -1,0 +1,4 @@
+todo.local.netpirates.net {
+    tls /etc/caddy/tls/todo.local.netpirates.net.pem /etc/caddy/tls/todo.local.netpirates.net-key.pem
+    reverse_proxy 127.0.0.1:8080
+}

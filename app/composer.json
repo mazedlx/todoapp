@@ -6,7 +6,12 @@
     "php": ">=8.4",
     "slim/slim": "^4.12",
     "slim/psr7": "^1.6",
-    "php-di/php-di": "^7.0"
+    "php-di/php-di": "^7.0",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-session": "*",
+    "ext-redis": "*",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

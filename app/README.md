@@ -19,7 +19,7 @@ Requirements
 - Composer
 - Reachable MySQL server
 
-Configuration via environment variables
+Configuration via Config.php
 - DB_HOST (default: 127.0.0.1)
 - DB_PORT (default: 3306)
 - DB_NAME (default: todo_demo)

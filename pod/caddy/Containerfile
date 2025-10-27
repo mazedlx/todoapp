@@ -1,0 +1,26 @@
+FROM caddy:2-alpine
+
+COPY <<EOF /etc/caddy/Caddyfile
+:80 {
+
+    root * /app/public
+
+    @static file
+    handle @static {
+        file_server
+    }
+
+    handle {
+        php_fastcgi 127.0.0.1:9000 {
+            env SCRIPT_FILENAME /app/public/index.php
+        }
+    }
+}
+EOF
+
+# Verzeichnis für die gemounteten Assets erstellen
+RUN mkdir -p /app/public
+
+EXPOSE 80 443 2019
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]

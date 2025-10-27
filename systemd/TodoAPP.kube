@@ -1,0 +1,11 @@
+[Unit]
+Description=TodoAPP via Podman Quadlet (kube)
+Wants=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=default.target
+
+[Kube]
+Yaml=/home/theseer/Desktop/LegacyToContainer/systemd/TodoAPP.yml
+Replace=true

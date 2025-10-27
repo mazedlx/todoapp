@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1.7
+
+FROM php:8.4-fpm-alpine
+
+# Install build tools and required PHP extensions
+RUN set -eux && \
+    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS && \
+    docker-php-ext-install -j"$(nproc)" pdo pdo_mysql && \
+    pecl install redis && \
+    docker-php-ext-enable redis && \
+    apk del .build-deps
+
+# json and session are built-in with PHP 8 in official images.
+
+WORKDIR /app
+
+COPY ./app /app/
+
+RUN chown -R www-data:www-data /app
+
+VOLUME /app/public
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
