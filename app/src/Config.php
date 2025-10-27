@@ -14,7 +14,7 @@ class Config {
     ) {}
 
     public static function create(): self {
-        $env = parse_ini_file('../.env');
+        $env = parse_ini_file('../../.env');
         return new self(
             $env['DB_HOST'] ?? 'localhost',
             isset($env['DB_PORT']) ? (int)$env['DB_PORT'] : 3306,
