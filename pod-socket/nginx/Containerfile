@@ -1,0 +1,6 @@
+FROM nginx:alpine
+
+COPY ./pod-socket/nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Verzeichnis für die gemounteten Assets erstellen
+RUN mkdir -p /app/public
