@@ -14,12 +14,13 @@ class Config {
     ) {}
 
     public static function create(): self {
+        $env = parse_ini_file('../.env');
         return new self(
-            '127.0.0.1',
-            3306,
-            'todo_demo',
-            'root',
-            ''
+            $env['DB_HOST'] ?? 'localhost',
+            isset($env['DB_PORT']) ? (int)$env['DB_PORT'] : 3306,
+            $env['DB_NAME'] ?? 'app_db',
+            $env['DB_USER'] ?? 'app_user',
+            $env['DB_PASS'] ?? 'secret_password'
         );
     }
 
