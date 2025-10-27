@@ -18,6 +18,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 // Basic session start
 if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.save_handler', 'redis');
+    ini_set('session.save_path', 'tcp://127.0.0.1:6379');
     session_start();
 }
 

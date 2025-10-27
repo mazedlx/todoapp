@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.7
-
 FROM php:8.4-fpm-alpine
 
 # Install build tools and required PHP extensions
@@ -17,8 +15,6 @@ WORKDIR /app
 COPY ./app /app/
 
 RUN chown -R www-data:www-data /app
-
-VOLUME /app/public
 
 EXPOSE 9000
 

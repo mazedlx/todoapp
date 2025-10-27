@@ -1,6 +1,6 @@
 #!/bin/bash
 
-podman pod create --name TodoAPP -p 127.0.0.1:8080:80
+podman pod create --name TodoAPP
 
 podman run --pod TodoAPP \
       -d --env MYSQL_ALLOW_EMPTY_PASSWORD=1 \
@@ -15,13 +15,14 @@ podman run --pod TodoAPP \
 podman run  --pod TodoAPP \
       -d \
       --name fpm \
-      localhost/todo-pod-fpm:latest
+      localhost/todo-pod-fpm-socket:latest
 
 podman run --pod TodoAPP \
       -d \
       --name caddy \
       --volumes-from fpm \
-      localhost/todo-pod-caddy:latest
+      -v /run/TodoAPP:/app/sockets \
+      localhost/todo-pod-caddy-socket:latest
 
 podman logs -f fpm
 

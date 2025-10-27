@@ -2,6 +2,7 @@ FROM caddy:2-alpine
 
 COPY <<EOF /etc/caddy/Caddyfile
 :80 {
+    bind unix//app/sockets/caddy-v1.sock|0666
 
     root * /app/public
 
